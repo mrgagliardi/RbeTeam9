@@ -15,5 +15,6 @@ public:
     StandoffController(void) : piStandoffer(1, 0, 0) {} //TODO: edit gains
 
     void processDistanceReading(float distance);
+    void processDistanceReadingUltra(float distance);
     void handleKeyPress(int16_t key);
 };

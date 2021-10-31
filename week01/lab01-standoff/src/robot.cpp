@@ -18,15 +18,21 @@ void Robot::init(void)
     irDecoder.init(IR_PIN);
     hrUltrasonic.init(USE_ECHO);  // TODO: use the sensor/method of your choice
 }
-
+int start = millis();
 void Robot::loop() 
 {
     //check the IR remote
     int16_t keyCode = irDecoder.getKeyCode();
-    if(keyCode != -1) handleIRPress(keyCode);
+    if(keyCode != -1){ handleIRPress(keyCode);Serial.print(keyCode);}
+
 
     //check the distance sensor
     float distanceReading = 0;
+    if (millis() > start + 10){
+        start = millis();
+        hrUltrasonic.checkPingTimer();
+    }
+   
     bool hasNewReading = hrUltrasonic.getDistance(distanceReading);
     if(hasNewReading) handleNewDistanceReading(distanceReading);
 }
@@ -52,8 +58,15 @@ void Robot::handleIRPress(int16_t key)
             {
                 robotState = ROBOT_WALL_FOLLOWING;
             }
+            if(key == NUM_0)
+            {
+                robotState = ROBOT_WALL_FOLLOWING;
+            }
             break;
         case ROBOT_STANDOFF:
+            standoffController.handleKeyPress(key);
+            break;
+        case ROBOT_WALL_FOLLOWING:
             standoffController.handleKeyPress(key);
             break;
         //TODO: Add case for wall following
@@ -71,12 +84,18 @@ void Robot::handleNewDistanceReading(float distanceReading)
     Serial.print('\t');
     
     //TODO: Add wall following behaviour
-
+        
     if(robotState == ROBOT_STANDOFF)
     {
-        standoffController.processDistanceReading(distanceReading);
-        chassis.setMotorEfforts(standoffController.leftEffort, standoffController.rightEffort);
-    }   
+       standoffController.processDistanceReading(distanceReading);
+       chassis.setMotorEfforts(standoffController.leftEffort, standoffController.rightEffort);
+    } 
+    if(robotState == ROBOT_WALL_FOLLOWING)
+    {
+       standoffController.processDistanceReadingUltra(distanceReading);
+       chassis.setMotorEfforts(standoffController.leftEffort, standoffController.rightEffort);
+    } 
+    
 
     Serial.print('\n');
 }
