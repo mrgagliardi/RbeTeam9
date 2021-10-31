@@ -2,6 +2,7 @@
 #include <RBE-200n-Lib.h>
 
 #include "robot.h"
+#include "hc-sr04.h"
 
 Robot robot;
 

@@ -3,7 +3,7 @@
 // NOTE THAT MY IR KEYS AND CODES ARE DIFFERENT FROM YOURS!!! Add/adust as needed
 #include "ir_codes.h"
 
-#include <maxbotix.h>
+#include "hc-sr04.h"
 #include <IRdecoder.h>
 
 Robot::Robot(void)
@@ -16,7 +16,7 @@ void Robot::init(void)
     chassis.init();
 
     irDecoder.init(IR_PIN);
-    mb_ez1.init(USE_ECHO);  // TODO: use the sensor/method of your choice
+    hrUltrasonic.init(USE_ECHO);  // TODO: use the sensor/method of your choice
 }
 
 void Robot::loop() 
@@ -27,7 +27,7 @@ void Robot::loop()
 
     //check the distance sensor
     float distanceReading = 0;
-    bool hasNewReading = mb_ez1.getDistance(distanceReading);
+    bool hasNewReading = hrUltrasonic.getDistance(distanceReading);
     if(hasNewReading) handleNewDistanceReading(distanceReading);
 }
 
