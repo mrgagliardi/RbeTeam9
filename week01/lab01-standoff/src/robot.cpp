@@ -77,11 +77,11 @@ void Robot::handleIRPress(int16_t key)
 
 void Robot::handleNewDistanceReading(float distanceReading)
 {
-    //comment out after you verify this works
-    Serial.print(millis());
-    Serial.print('\t');
-    Serial.print(distanceReading);
-    Serial.print('\t');
+    // //comment out after you verify this works
+    // Serial.print(millis());
+    // Serial.print('\t');
+    // Serial.print(distanceReading);
+    // Serial.print('\t');
     
     //TODO: Add wall following behaviour
         
@@ -97,5 +97,5 @@ void Robot::handleNewDistanceReading(float distanceReading)
     } 
     
 
-    Serial.print('\n');
+    // Serial.print('\n');
 }

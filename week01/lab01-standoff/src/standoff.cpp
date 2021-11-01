@@ -24,22 +24,40 @@ void StandoffController::processDistanceReading(float distance)
 }
 void StandoffController::processDistanceReadingUltra(float distance)
 {
-    piStandoffer.SetKp(0.8);
-    piStandoffer.SetKd(0);
+    piStandoffer.SetKp(0.3);
+    piStandoffer.SetKd(0.01);
     float error = targetDistance - distance;
-    float effort = piStandoffer.CalcEffort(error);
-    if(error < 8 && error > -8){
-        leftEffort = 10;
+    float effort = piStandoffer.ComputeEffort(error);
+    if(error < 2 && error > -2){
         rightEffort = 10;
+        leftEffort = 10;
+        return;
     }
-    else if(error > 0){
-        rightEffort = 0;
-        leftEffort = -effort;
-    }
-    else{
-        leftEffort = 0;
-        rightEffort = -effort;
-    }
+    rightEffort = 30-effort;
+    leftEffort = 30+effort;
+    // if(10 - effort < -30){
+    //     rightEffort = -30;
+    // }
+    // else if(10 - effort > 30){
+    //     rightEffort = 30;
+    // }
+    // else{
+    // rightEffort = 10-effort;
+    // }
+    // if(10 + effort > 30){
+    //     leftEffort = 30;
+    // }
+    // else if(10 + effort < -30){
+    //     leftEffort = -30;
+    // }
+    // else{
+    //     leftEffort = 10+effort;
+    // }
+    Serial.print("Right Effort:");
+    Serial.print(rightEffort);
+    Serial.print(" Left Effort:");
+    Serial.print(leftEffort);
+    Serial.print("\n");
 
     // Serial.print(targetDistance);
     // Serial.print('\t');

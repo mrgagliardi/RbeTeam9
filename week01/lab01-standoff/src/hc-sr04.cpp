@@ -53,8 +53,6 @@ uint8_t HRUltrasonic::checkPingTimer(void)
         //clear out any leftover states
         state = 0;
 
-        Serial.print("in if");
-
         lastPing = millis();    //not perfectly on schedule, but safer and close enough
         lastADCread = lastPing; //this will make sure the proper interval is past before we read the ADC
 
@@ -89,7 +87,6 @@ void HRUltrasonic::checkPin(uint8_t checkPingTimer){
 void HRUltrasonic::MB_ISR(void)
 
 {
-    Serial.print("in ISR");
     if(digitalRead(ECHO_PIN))  //transitioned to HIGH
     {
         pulseStart = micros();
